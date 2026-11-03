@@ -1,0 +1,28 @@
+# Campus Network Fault Reporting System : Redis (NoSQL key-value) commands
+# 1. Connectivity
+PING
+# 2. STRING with TTL : cache-aside for dashboard statistics
+SET cache:dashboard:stats "{\"total\":11,\"active\":8,\"critical\":2,\"resolved\":3}" EX 60
+GET cache:dashboard:stats
+TTL cache:dashboard:stats
+# 3. LIST : live activity feed (newest first, capped at 50)
+LPUSH activity:log "{\"type\":\"REPORTED\",\"message\":\"#12 CONNECTIVITY on LIB-SW1 (HIGH)\",\"at\":\"2026-11-02T03:00:00Z\"}"
+LTRIM activity:log 0 49
+LRANGE activity:log 0 4
+LLEN activity:log
+# 4. HASH : running count of faults per fault type
+HINCRBY stats:fault_types CONNECTIVITY 1
+HGETALL stats:fault_types
+# 5. SORTED SET : hot-device leaderboard weighted by priority
+ZINCRBY leaderboard:hot_devices 3 LIB-SW1
+ZREVRANGE leaderboard:hot_devices 0 4 WITHSCORES
+ZSCORE leaderboard:hot_devices CSE-LAB2-AP1
+# 6. Rate limiting : max 5 reports per client per minute
+INCR ratelimit:report:10.0.0.25
+EXPIRE ratelimit:report:10.0.0.25 60
+TTL ratelimit:report:10.0.0.25
+# 7. Inspection and cache invalidation
+KEYS *
+TYPE leaderboard:hot_devices
+DEL cache:dashboard:stats
+EXISTS cache:dashboard:stats
