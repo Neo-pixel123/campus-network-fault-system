@@ -26,3 +26,8 @@ KEYS *
 TYPE leaderboard:hot_devices
 DEL cache:dashboard:stats
 EXISTS cache:dashboard:stats
+# 8. Login sessions : STRING (JSON user) with an 8-hour TTL
+SET session:9f2c7e1a "{\"user_id\":7,\"name\":\"System Admin\",\"role\":\"ADMIN\"}" EX 28800
+GET session:9f2c7e1a
+TTL session:9f2c7e1a
+DEL session:9f2c7e1a
