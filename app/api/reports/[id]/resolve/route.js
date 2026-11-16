@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import { redis, KEYS, logActivity } from "@/lib/redis";
+import { getSession, isAdmin } from "@/lib/auth";
 
 export async function POST(req, { params }) {
+  if (!isAdmin(await getSession())) {
+    return NextResponse.json({ error: "Only admins can resolve faults" }, { status: 403 });
+  }
   const { id } = await params;
   const { notes } = await req.json();
   try {

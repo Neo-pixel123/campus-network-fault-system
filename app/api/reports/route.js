@@ -2,19 +2,26 @@ import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import { allowReport, logActivity, recordNewFault } from "@/lib/redis";
 import { getReports } from "@/lib/data";
+import { getSession, isAdmin } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  if (!(await getSession())) return NextResponse.json({ error: "Login required" }, { status: 401 });
   return NextResponse.json(await getReports());
 }
 
 export async function POST(req) {
+  const user = await getSession();
+  if (!user) return NextResponse.json({ error: "Login required" }, { status: 401 });
   const ip = req.headers.get("x-forwarded-for") ?? "local";
   if (!(await allowReport(ip))) {
     return NextResponse.json({ error: "Too many reports, try again in a minute" }, { status: 429 });
   }
-  const { user_id, device_id, fault_type, description, priority } = await req.json();
+  const body = await req.json();
+  const { device_id, fault_type, description, priority } = body;
+  // Users always report as themselves; only an admin may report on behalf of someone else
+  const user_id = isAdmin(user) && body.user_id ? body.user_id : user.user_id;
   if (!user_id || !device_id || !fault_type || !description) {
     return NextResponse.json({ error: "All fields are required" }, { status: 400 });
   }

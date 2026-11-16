@@ -2,12 +2,13 @@ import { notFound } from "next/navigation";
 import { getReport, getTechnicians } from "@/lib/data";
 import Badge from "@/components/Badge";
 import Actions from "./Actions";
+import { getSession, isAdmin } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function ReportDetail({ params }) {
   const { id } = await params;
-  const [r, techs] = await Promise.all([getReport(id), getTechnicians()]);
+  const [r, techs, user] = await Promise.all([getReport(id), getTechnicians(), getSession()]);
   if (!r) notFound();
   return (
     <>
@@ -35,8 +36,10 @@ export default async function ReportDetail({ params }) {
             <dt>Resolution</dt><dd>{r.resolution_notes ?? "—"}</dd>
             <dt>Resolved at</dt><dd>{r.resolved_at ?? "—"}</dd>
           </dl>
-          <Actions id={r.report_id} status={r.status} assigned={!!r.technician_name}
-                   technicians={techs.filter((t) => t.availability_status === "AVAILABLE")} />
+          {isAdmin(user)
+            ? <Actions id={r.report_id} status={r.status} assigned={!!r.technician_name}
+                       technicians={techs.filter((t) => t.availability_status === "AVAILABLE")} />
+            : <p className="note">Only an admin can assign or resolve this fault.</p>}
         </div>
       </section>
     </>

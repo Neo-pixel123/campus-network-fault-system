@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "db:setup": "mysql -u root < db/01_schema.sql && mysql -u root < db/02_data.sql && mysql -u root < db/03_routines.sql"
+    "db:setup": "mysql -u root < db/01_schema.sql && mysql -u root < db/02_data.sql && mysql -u root < db/03_routines.sql && mysql -u root < db/06_auth.sql"
   },
   "dependencies": {
     "ioredis": "^5.4.1",

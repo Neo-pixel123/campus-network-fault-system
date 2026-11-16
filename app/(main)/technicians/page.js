@@ -1,9 +1,12 @@
 import { getTechnicians } from "@/lib/data";
 import Badge from "@/components/Badge";
+import { redirect } from "next/navigation";
+import { getSession, isAdmin } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function Technicians() {
+  if (!isAdmin(await getSession())) redirect("/");
   const techs = await getTechnicians();
   return (
     <>

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 const TYPES = ["CONNECTIVITY", "WIRELESS", "HARDWARE", "CONFIGURATION", "PERFORMANCE"];
 
-export default function ReportForm({ users, devices }) {
+export default function ReportForm({ users, devices, user, admin }) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -29,7 +29,9 @@ export default function ReportForm({ users, devices }) {
   return (
     <form className="card form" onSubmit={submit}>
       <label>Reported by
-        <select name="user_id" required>{users.map((u) => <option key={u.user_id} value={u.user_id}>{u.name} ({u.role})</option>)}</select>
+        {admin
+          ? <select name="user_id" required>{users.map((u) => <option key={u.user_id} value={u.user_id}>{u.name} ({u.role})</option>)}</select>
+          : <input value={`${user.name} (${user.role})`} disabled />}
       </label>
       <label>Device
         <select name="device_id" required>{devices.map((d) => <option key={d.device_id} value={d.device_id}>{d.device_name} — {d.location_name}</option>)}</select>
