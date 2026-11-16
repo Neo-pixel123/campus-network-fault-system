@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const router = useRouter();
-  const [mode, setMode] = useState("user");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -17,7 +16,7 @@ export default function LoginForm() {
     const res = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, mode }),
+      body: JSON.stringify({ email, password }),
     });
     const json = await res.json();
     setBusy(false);
@@ -28,19 +27,15 @@ export default function LoginForm() {
 
   return (
     <form className="card login-card" onSubmit={submit}>
-      <div className="tabs">
-        <button type="button" className={mode === "user" ? "on" : ""} onClick={() => { setMode("user"); setError(""); }}>User login</button>
-        <button type="button" className={mode === "admin" ? "on" : ""} onClick={() => { setMode("admin"); setError(""); }}>Admin login</button>
-      </div>
       <label>Email
-        <input name="email" type="email" required placeholder={mode === "admin" ? "admin@campus.edu" : "you@campus.edu"} />
+        <input name="email" type="email" required placeholder="you@campus.edu" />
       </label>
       <label>Password
         <input name="password" type="password" required />
       </label>
       {error && <p className="error">{error}</p>}
-      <button className="btn" disabled={busy}>{busy ? "Signing in…" : mode === "admin" ? "Sign in as admin" : "Sign in"}</button>
-      {mode === "user" && <p className="switch">New user? <Link href="/register">Create an account</Link></p>}
+      <button className="btn" disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button>
+      <p className="switch">New user? <Link href="/register">Create an account</Link></p>
     </form>
   );
 }

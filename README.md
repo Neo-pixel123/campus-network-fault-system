@@ -22,7 +22,9 @@ DBMS mini project — Next.js 15 + MySQL 8 + Redis 7.
 - `db/` — SQL scripts (DDL, DML, routines/triggers, queries) and Redis command script
 
 ## Login
-| Login | Email | Password |
+One login page for everyone; the account's `role` decides what it can do.
+
+| Account | Email | Password |
 |---|---|---|
 | Admin | admin@campus.edu | admin123 |
 | User | any user, e.g. aman@campus.edu | user123 |
