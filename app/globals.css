@@ -63,3 +63,7 @@ dl { display:grid; grid-template-columns:120px 1fr; gap:8px; font-size:14px; mar
 .tabs button { border:0; background:transparent; padding:8px; border-radius:6px; font:inherit; font-size:14px; cursor:pointer; color:var(--muted); }
 .tabs button.on { background:#fff; color:var(--ink); font-weight:600; box-shadow:0 1px 2px #0001; }
 .note { font-size:13px; color:var(--muted); margin-top:10px; }
+.switch { font-size:13px; color:var(--muted); text-align:center; margin:0; }
+.login-card .row label { flex:1; }
+.login-card input, .login-card select { width:100%; min-width:0; box-sizing:border-box; }
+.login-card .row label { min-width:0; }

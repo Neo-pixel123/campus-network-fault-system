@@ -27,5 +27,7 @@ DBMS mini project — Next.js 15 + MySQL 8 + Redis 7.
 | Admin | admin@campus.edu | admin123 |
 | User | any user, e.g. aman@campus.edu | user123 |
 
+New users can sign up at `/register` (Student, Faculty or Staff; admin accounts cannot self-register).
+
 Admins can assign and resolve faults and see Technicians. Users can report faults (as themselves) and view reports, devices and the dashboard.
 Sessions are stored in Redis (`session:<token>`, 8-hour TTL); passwords are stored as SHA-256 hashes in `SYSTEM_USER.password_hash`.

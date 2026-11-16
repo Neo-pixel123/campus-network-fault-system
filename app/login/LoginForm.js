@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
@@ -39,6 +40,7 @@ export default function LoginForm() {
       </label>
       {error && <p className="error">{error}</p>}
       <button className="btn" disabled={busy}>{busy ? "Signing in…" : mode === "admin" ? "Sign in as admin" : "Sign in"}</button>
+      {mode === "user" && <p className="switch">New user? <Link href="/register">Create an account</Link></p>}
     </form>
   );
 }
