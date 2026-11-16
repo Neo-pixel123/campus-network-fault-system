@@ -24,10 +24,7 @@ DBMS mini project — Next.js 15 + MySQL 8 + Redis 7.
 ## Login
 One login page for everyone; the account's `role` decides what it can do.
 
-| Account | Email | Password |
-|---|---|---|
-| Admin | admin@campus.edu | admin123 |
-| User | any user, e.g. aman@campus.edu | user123 |
+Demo accounts (one admin, plus the sample users) are created by `db/06_auth.sql`. Change their passwords before using this anywhere real.
 
 New users can sign up at `/register` (Student, Faculty or Staff; admin accounts cannot self-register).
 
