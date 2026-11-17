@@ -30,3 +30,7 @@ New users can sign up at `/register` (Student, Faculty or Staff; admin accounts 
 
 Admins can assign and resolve faults and see Technicians. Users can report faults (as themselves) and view reports, devices and the dashboard.
 Sessions are stored in Redis (`session:<token>`, 8-hour TTL); passwords are stored as SHA-256 hashes in `SYSTEM_USER.password_hash`.
+
+## Documents
+- [Project report (PDF)](docs/DBMS_Mini_Project_Report.pdf)
+- [ER diagram](docs/ER_Diagram.png)
